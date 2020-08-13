@@ -27,4 +27,3 @@ words = CountVectorizer()
 word_vector = words.fit_transform(text_collection)
 print(word_vector)
 
-print(text_collection['Shipbroker Clarkson boosted by rush to store cheap oil _ Financial Times.html'])
