@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 """
 Mark Gao - Capstone Project 2020.
-Module 1 of X.
+Module 2 of X.
 This module defines helper functions to gather files from your project directory and prepare them into Python objects.
 """
 

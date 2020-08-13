@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 """
 Mark Gao - Capstone Project 2020.
-Module 2 of X.
+Module 3 of X.
 Use this module to fit an NLP model.
 """
 
