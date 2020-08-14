@@ -1,9 +1,5 @@
 import WebScrape
 import CleanHTML
-import NLP
-
-links = WebScrape.scrape_oilprice(pgs=1)
-#WebScrape.download_links(links, "C:/Users/Mark/Desktop/test-data")
 
 
 """
@@ -26,5 +22,11 @@ classes = ["bull", "bear", "neutral"]
 # =============================================================================
 
 
+samples = CleanHTML.associate_dates(root, htmlfiles, classes)
+print(samples['Shipbroker Clarkson boosted by rush to store cheap oil _ Financial Times.html'])
+
+#links = WebScrape.scrape_oilprice(pgs=54)
+#WebScrape.download_links(links, "C:/Users/Mark/Desktop/test-data")
+# Last download:
 if __name__ == '__main__':
 	pass
