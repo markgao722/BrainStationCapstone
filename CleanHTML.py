@@ -1,7 +1,8 @@
 import os
+import re
 
 from bs4 import BeautifulSoup
-
+from datetime import datetime
 
 """
 Mark Gao - Capstone Project 2020.
@@ -77,8 +78,11 @@ def associate_dates(root: str, data: list, classes: list):
                 span = content[0]
 
                 # Manipulate the text to get a standardized date format
-                date = span.text.split(' - ')[1]  # ---> not sure if this will work for every article!!
-                
+                string = span.text.split(' - ')[1]  # ---> not sure if this will work for every article!!
+                string2 = re.search("[A-z]+\s[0-9]+,\s[0-9]{4}", string)
+                string3 = string2.group(0)
+
+                date = datetime.strptime(string3, "%b %d, %Y").date()
 
                 output[data_item] = date
     return output
