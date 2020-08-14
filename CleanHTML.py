@@ -73,7 +73,12 @@ def associate_dates(root: str, data: list, classes: list):
                 file = open(filename, 'r', encoding='utf8')
                 html = file.read()
                 soup = BeautifulSoup(html)
-                date = soup.find_all('span', class)
+                content = soup.find_all('span', class_="article_byline")
+                span = content[0]
+
+                # Manipulate the text to get a standardized date format
+                date = span.text.split(' - ')[1]  # ---> not sure if this will work for every article!!
+                
 
                 output[data_item] = date
     return output

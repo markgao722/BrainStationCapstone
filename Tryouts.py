@@ -1,4 +1,5 @@
 import WebScrape
+import EnergyAPI
 import CleanHTML
 
 
@@ -23,7 +24,11 @@ classes = ["bull", "bear", "neutral"]
 
 
 samples = CleanHTML.associate_dates(root, htmlfiles, classes)
-print(samples['Shipbroker Clarkson boosted by rush to store cheap oil _ Financial Times.html'])
+sample = samples['10-Oil-Forces-US-Drilling-Giant-To-File-For-Bankruptcy.html']
+print(type(sample))
+print(sample)
+
+
 
 #links = WebScrape.scrape_oilprice(pgs=54)
 #WebScrape.download_links(links, "C:/Users/Mark/Desktop/test-data")
