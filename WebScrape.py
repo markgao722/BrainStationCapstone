@@ -1,7 +1,6 @@
 import requests
 
 import urllib.request as url3request
-import urllib.parse as url3parse
 from bs4 import BeautifulSoup
 
 
@@ -18,14 +17,14 @@ sites = ["https://www.investing.com/commodities/crude-oil-news/",  # unknown max
          ]
 
 
-def scrape_oilprice(url="https://oilprice.com/Latest-Energy-News/World-News/", pgs: int=3)-> list:
+def scrape_oilprice(url="https://oilprice.com/Latest-Energy-News/World-News/", pgs: int=1)-> list:
     """
     Scrapes several pages of oilprice.com's news section to give a list of urls that can be accessed later.
     Note the output is a list of urls (str), and not a bs4 or requests object, so a parser of some sort will be needed
         to access the html at some later point.
     :param url: str, web address to oilprice.com's news section.
-    :param pgs: int, maximum number of pages to collect. Default 3; keep low when doing test scrapes.
-    :return:
+    :param pgs: int, maximum number of pages to collect. Default 1; keep low when doing test scrapes.
+    :return:    list, of links to web pages
     """
     print(f"Scraping oilprice.com news section...")
     files_scanned = 0
@@ -55,6 +54,25 @@ def scrape_oilprice(url="https://oilprice.com/Latest-Energy-News/World-News/", p
 
     return links
     # NOTE TO SELF: we know the page format is /World-News/Page-12.html so a general pagination function wasn't made
+
+
+def scrape_worldoil(url="https://www.worldoil.com/topics/production", pgs=1)-> list:
+    """
+    Scrapes several pages of worldoil.com's news section to give a list of urls that can be accessed later.
+    Note the output is a list of urls (str), and not a bs4 or requests object, so a parser of some sort will be needed
+        to access the html at some later point.
+    :param url: str, web address to worldoil.com's news section.
+    :param pgs: int, maximum number of pages to collect. Default 1; keep low when doing test scrapes.
+    :return:    list, of links to web pages
+    """
+    response = requests.get(url)
+
+    for pg in range(1, pgs+1):
+        pass
+
+    # ---> refer to pages as ?page=2
+
+    return []
 
 
 def download_links(links: list, dir: str)-> None:
