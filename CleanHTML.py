@@ -1,8 +1,8 @@
 import os
 import re
-
 from bs4 import BeautifulSoup
 from datetime import datetime
+
 
 """
 Mark Gao - Capstone Project 2020.
@@ -15,8 +15,8 @@ def main(root: str, data: list, classes: list)-> dict:
     """
     Transforms every file (typically HTML) within the file structure given to strings.
     The resulting strings, each representing a file, are loaded into a dictionary where the key is the filename.
-    :param root:    str, the top-level folder containing the data folders. If only one data source exists (e.g. Twitter data),
-                    then let this be one level up from working directory.
+    :param root:    str, the top-level folder containing the data folders. If only one data source exists (e.g. Twitter
+                    data), then let this be one level up from working directory.
     :param folders: list(str), the folder or a list of folders which will contain a folder for each class type.
     :param classes: list(str), the list of folders, each which contains data of a certain class.
     :return:        dict, with keys: file name and values: string-representation of HTML
@@ -54,6 +54,15 @@ def main(root: str, data: list, classes: list)-> dict:
 
 
 def associate_dates(root: str, data: list, classes: list):
+    """
+    For each file in the given directory, find the date of publication within the HTML and use it as the value in the
+        output dictionary. The output dictionary's keys are the file names.
+    :param root:    str, the top-level folder containing the data folders. If only one data source exists (e.g. Twitter data),
+                    then let this be one level up from working directory.
+    :param data:    list(str), the folder or a list of folders which will contain a folder for each class type.
+    :param classes: list(str), the list of folders, each which contains data of a certain class.
+    :return:        dict, with keys: file name (str) and values: published date (datetime obj)
+    """
     output = {}
 
     # Construct a path to a single html file with a triple for loop. Adjust your folder structure if NOT in 3 layers.

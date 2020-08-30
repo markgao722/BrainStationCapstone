@@ -2,6 +2,7 @@ import requests
 import json
 import pandas as pd
 import numpy as np
+from datetime import datetime, timedelta
 
 
 """
@@ -48,3 +49,28 @@ def main(display=True)-> pd.DataFrame:
         # Pct-Chng (float)      not needed in model
         # Change (str)          use this as class labels
     return df
+
+
+def status_by_week(files: dict, EIA: pd.DataFrame)-> dict:
+    """
+    Once weekly oil supplies are pulled into a DataFrame (EIA), and a collection of news articles are gathered as a
+        dictionary (files), use this to determine whether an article belonging to a certain date corresponded with a
+        week of increased or decreased oil supply
+    :param files:   dict, with keys: filename (str) and values: publication date (datetime)
+    :param EIA:     pd.DataFrame, of time-series data, with column 0: date and 1: increase/decrease
+    :return:        dict, with keys: publication date (datetime) and values: increase/decrease (str)
+    """
+    statuses = dict()
+
+    for article_date in files.values():
+        status_for_this_week = None
+
+        for week_end, idx in zip(EIA.iloc[0], range(len(EIA))):
+            week_start = week_end - timedelta(days=6)
+
+            if week_start <= article_date <= week_end:
+                status_for_this_week = EIA.iloc[idx, 1]
+
+        statuses[article_date] = status_for_this_week
+
+    return statuses
