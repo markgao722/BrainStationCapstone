@@ -24,22 +24,8 @@ classes = ["bull", "bear", "neutral"]
 
 
 samples = CleanHTML.associate_dates(root, htmlfiles, classes) # contains dict{filename str: datetime object}
-energy_df = EnergyAPI.main(display=False)
-mapper_df = energy_df[['Date-Idx', 'Change']]
-mapper_df = mapper_df.iloc[:550, :]
+EIA_df = EnergyAPI.main(display=False)
+EIA_df = EIA_df.iloc[:550, :]
 
-status_by_week = dict()
-
-for article_date in samples.values():
-    status_for_this_week = None
-
-    for week_end, idx in zip(mapper_df["Date-Idx"], range(len(mapper_df))):
-        week_start = week_end - timedelta(days=6)
-
-        if week_start <= article_date <= week_end:
-            status_for_this_week = mapper_df.iloc[idx, 1]
-
-    status_by_week[article_date] = status_for_this_week
-    print(status_for_this_week)
-
-print(status_by_week)
+date_labels = EnergyAPI.status_by_week(samples, EIA_df)
+print(date_labels)

@@ -37,17 +37,16 @@ def main(display=True)-> pd.DataFrame:
     df["Pct-Chng"] = df["Value"].pct_change(-1)
     df["Change"] = np.where(df["Pct-Chng"] <= 0, "Decrease", "Increase")
 
-    if display:
-        print(df.head(10))
-        print(df.tail())
-        print(df.info())
-        print(df.describe())
-
+    df.drop(['Date', 'Value', 'Pct-Chng'], axis=1, inplace=True)
         # Date (str)            not needed in model
         # Value (int)           not needed in model
         # Date-Idx (datetime)   use this to associate articles of the week to the correct weekly sample
         # Pct-Chng (float)      not needed in model
         # Change (str)          use this as class labels
+    if display:
+        print(df.head(10))
+        print(df.tail())
+
     return df
 
 
@@ -65,7 +64,7 @@ def status_by_week(files: dict, EIA: pd.DataFrame)-> dict:
     for article_date in files.values():
         status_for_this_week = None
 
-        for week_end, idx in zip(EIA.iloc[0], range(len(EIA))):
+        for week_end, idx in zip(EIA.iloc[:, 0], range(len(EIA))):
             week_start = week_end - timedelta(days=6)
 
             if week_start <= article_date <= week_end:
