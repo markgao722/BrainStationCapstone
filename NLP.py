@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
+import tensorflow as tf
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
+# from sklearn.tree import DecisionTreeClassifier
 from sklearn.datasets import fetch_20newsgroups
 
 

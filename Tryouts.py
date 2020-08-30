@@ -1,6 +1,7 @@
 import WebScrape
 import EnergyAPI
 import CleanHTML
+import pandas as pd
 from datetime import datetime, timedelta
 
 """
@@ -15,17 +16,26 @@ on this page as needed.
 # === Constants ===============================================================
 root = "C:/Users/Mark/Documents/BS-CAPSTONE/BrainStationCapstone"
 
-htmlfiles = ["data-FT",
-             "data-Twitter",
+htmlfiles = ["raw-data",
              ]
 
-classes = ["bull", "bear", "neutral"]
+classes = ["unlabelled"]
 # =============================================================================
 
 
-samples = CleanHTML.associate_dates(root, htmlfiles, classes) # contains dict{filename str: datetime object}
+samples = CleanHTML.associate_dates(root, htmlfiles, classes) # contains dict{filename str: datetime obj}
 EIA_df = EnergyAPI.main(display=False)
-EIA_df = EIA_df.iloc[:550, :]
+EIA_df = EIA_df.iloc[:550, :]  # don't need pre-2011 data
 
-date_labels = EnergyAPI.status_by_week(samples, EIA_df)
-print(date_labels)
+date_labels = EnergyAPI.status_by_week(samples, EIA_df) # constains dict{datetime obj: change str}
+
+files = list(samples.keys())
+file_dates = list(samples.values())
+change_dates = list(date_labels.keys())
+changes = list(date_labels.values())
+
+df1 = pd.DataFrame({"Filename": files, "Date": file_dates}, index=range(len(files)))
+df2 = pd.DataFrame({"Date": change_dates, "Change": changes}, index=range(len(changes)))
+data = df2.join(df1.set_index('Date'), on='Date', how='inner', lsuffix="LDate", rsuffix="RDate")  # must join on idx
+
+print(data.head())
