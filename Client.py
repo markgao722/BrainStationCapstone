@@ -13,9 +13,6 @@ date_labels = pd.DataFrame({"Date": [dt.fromisoformat("2020-01-01"),
                                      dt.fromisoformat("2021-01-01")],
                             "Change": ["Increase", "Increase", "Decrease", "Increase"]})
 
-print(samples.info())
-print(date_labels.info())
-
 df = samples.join(date_labels.set_index('Date'), on='Date', how='inner', lsuffix="LDate", rsuffix="RDate")
 
 print(df.head())

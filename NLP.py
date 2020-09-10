@@ -2,67 +2,86 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
-# from sklearn.tree import DecisionTreeClassifier
-from sklearn.datasets import fetch_20newsgroups
-
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import GridSearchCV
+from sklearn.decomposition import PCA, KernelPCA
 
 """
 Mark Gao - Capstone Project 2020.
-Module 3 of X.
+Module X of X.
 Use this module to fit an NLP model.
 """
 
 
-categorical = ['alt.atheism', 'comp.graphics', 'sci.med', 'soc.religion.christian']
-bunch = fetch_20newsgroups(subset='train', categories=categorical, shuffle=True, random_state=42)
-bunch_ = fetch_20newsgroups(subset='test', categories=categorical, shuffle=True, random_state=42)
-    # bunch:       sklearn.utils.Bunch object
-    # bunch.data:  list object
-    # bunch.target:    np.array object
-    # bunch.target_names:  list object (unique classes)
+def prepare(X_train, X_test)-> tuple:
 
-data = bunch.data
-# ["This article is about...",
-#  "New York News: Today on Wall Street over a thousand...",
-#  "Apple announces $2.0 billion in funding..."]
+    vectorizer = CountVectorizer(min_df=30,
+                                 tokenizer=None,
+                                 ngram_range=(1, 3),
+                                 )
 
-labels = bunch.target
-# np.array([0, 1, 3, 3, 2, ...])
+    X_train_ = vectorizer.fit_transform(X_train)
+    X_test_ = vectorizer.transform(X_test)
 
-labelnames= bunch.target_names
-# Equivalent to categorical = ['alt.atheism', 'comp.graphics', 'sci.med', 'soc.religion.christian']
+    return (X_train_, X_test_)
 
-vectorizer = CountVectorizer(min_df=15,
-                             tokenizer=None,
-                             ngram_range=(1, 2))  # CountVectorizer object
 
-X_train = vectorizer.fit_transform(data)  # scipy sparse csr_matrix
+def model_one(X_train, X_test, y_train, y_test, metrics=True)-> tuple:
+    """
+    Run the first trial, which was done with a decision tree model. Estimated run-time is XXX minutes.
+    :param X_train: df, or Series, where the column contains strings representing articles.
+    :param X_test:  df, or Series, where the column contains strings representing articles.
+    :param y_train: df, or Series, where the column contains the 'increase' / 'decrease' string.
+    :param y_test:  df, or Series, where the column contains the 'increase' / 'decrease' string.
+    :param metrics: bool, print out the key metrics when true.
+    :return:        tuple, containing various results of the model
+    """
 
-# Using the vectorizer as one-hot encoded columns and the matrix as word counts and samples, we can visualize the data
-#   in a DataFrame.
-df = pd.DataFrame(columns=vectorizer.get_feature_names(),
-                  data=X_train.toarray())
+    pipe = Pipeline([('PCA', PCA()),
+                     ('Model', DecisionTreeClassifier()),
+                     ])
 
-print(df.head())
-print(df.shape)
+    grid = GridSearchCV(pipe, param_grid={'PCA__n_components': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                          'Model__max_depth': range(25),
+                                          })
 
-logit = LogisticRegression()
-logit.fit(X_train, labels)
-print(logit.score(X_train, labels))
+    model = grid.fit(X_train, y_train)
 
-# Test data portion of things ----------
-data_ = bunch_.data
-X_test = vectorizer.transform(data_)
-labels_ = bunch_.target
+    test_score = model.score(X_test, y_test)
+    best_est = model.best_estimator_
 
-df = pd.DataFrame(columns=vectorizer.get_feature_names(),
-                  data=X_test.toarray())
+    if metrics:
+        print(test_score)
+        print(best_est)
 
-print(df.head())
-print(df.shape)
-# --------------------------------------
+    return (test_score, best_est)
 
-preds = logit.predict(X_test)
-print(accuracy_score(preds, labels_))
+
+def model_two(X_train, X_test, y_train, y_test, metrics=True)-> tuple:
+    """
+    Run the first trial, which was done with a random forest model. Estimated run-time is XXX minutes.
+    >> See model_one for the parameter descriptions.
+    :return:
+    """
+
+    pipe = Pipeline([('PCA', PCA()),
+                     ('Model', RandomForestClassifier()),
+                     ])
+
+    grid = GridSearchCV(pipe, param_grid={'PCA__n_components': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                          'Model__n_estimators': [1, 2, 3, 4, 5],
+                                          'Model__max_depth': range(25)})
+
+    model = grid.fit(X_train, y_train)
+
+    test_score = model.score(X_test, y_test)
+    best_est = model.best_estimator_
+
+    if metrics:
+        print(test_score)
+        print(best_est)
+
+    return (test_score, best_est)
