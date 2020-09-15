@@ -3,6 +3,7 @@ import EnergyAPI
 import CleanHTML
 import NLP
 import pandas as pd
+import numpy as np
 from bs4 import BeautifulSoup
 from sklearn.model_selection import train_test_split
 
@@ -73,9 +74,14 @@ X_df = pd.DataFrame({"Data": text_list}, index=range(len(text_list)))
 
 # --- Step 4: Split the data into train and test sets and begin running models.
 X_train_df, X_test_df, y_train, y_test = train_test_split(X_df, y, test_size=0.33, random_state=0)
+# train: 236/722 decrease, 487/722 increase
+# test: 119/357 decrease, 238/357 increase
 
 X_train, X_test = NLP.prepare(X_train_df, X_test_df)
 
-NLP.model_one(X_train, X_test, y_train, y_test)
-NLP.model_two(X_train, X_test, y_train, y_test)
-NLP.model_three(X_train, X_test, y_train, y_test)
+
+#NLP.model_one(X_train, X_test, y_train, y_test)
+#NLP.model_two(X_train, X_test, y_train, y_test)
+#NLP.model_three(X_train, X_test, y_train, y_test)
+#NLP.model_four(X_train, X_test, y_train, y_test)
+NLP.model_five(X_train, X_test, y_train, y_test)
