@@ -6,7 +6,7 @@ from datetime import datetime
 
 """
 Mark Gao - Capstone Project 2020.
-Module 2 of X.
+Module 3 of 5.
 This module defines helper functions to gather files from your project directory and prepare them into Python objects.
 """
 

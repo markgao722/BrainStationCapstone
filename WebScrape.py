@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 """
 Mark Gao - Capstone Project 2020.
-Module 1 of X.
+Module 2 of 5.
 This module scrapes selected websites and saves relevant webpages as html files.
 """
 

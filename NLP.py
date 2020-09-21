@@ -10,12 +10,12 @@ from sklearn.svm import LinearSVC
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 from sklearn.decomposition import PCA  # KernelPCA
-from sklearn.preprocessing import StandardScaler
+# from sklearn.preprocessing import StandardScaler
 
 
 """
 Mark Gao - Capstone Project 2020.
-Module X of X.
+Module 5 of 5.
 Use this module to fit an NLP model.
 """
 

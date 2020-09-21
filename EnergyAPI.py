@@ -7,7 +7,7 @@ from datetime import timedelta
 
 """
 Mark Gao - Capstone Project 2020.
-Module X of X.
+Module 4 of 5.
 This makes an API call to the EIA's database to collect oil stock data. An alternative is to download a CSV to local
 machine. The oil supply figures (or rather the change in supplies) will be used as class labels for the model.
 """
